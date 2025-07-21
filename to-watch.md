@@ -4,7 +4,7 @@ EVENTS
 -on_chunk_generated
 -on_gui_XXXXX (Any GUI elements)
 -on_mod_item_opened	("Called when the player uses the 'Open item GUI' control on an item defined with the 'mod-openable' flag"}
--on_research_finished (For auto-upgrade of generated structres)
+-on_research_XXXXX (For auto-upgrade of generated structres)
 -
 
 less useful/more random
@@ -18,10 +18,23 @@ PROTOTYPE
 
 CLASSES
 ================
+-LuaTechnology
 -
 
 CONCEPTS
 ================
 -GuiElementType
+-ChunkPosition
+-TechnologyID
+-Tile
+-TileID
+-TilePosition
+-SurfaceIdentification
+-SurfaceCondition
+-ModSetting
+-AutoplaceControl
+-MineableProperties
 -
-
+DEFINES
+================
+-
