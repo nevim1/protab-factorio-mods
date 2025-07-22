@@ -19,7 +19,7 @@ PROTOTYPE
 CLASSES
 ================
 -LuaTechnology
--
+-LuaGuiElement
 
 CONCEPTS
 ================
