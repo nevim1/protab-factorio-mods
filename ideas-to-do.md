@@ -7,8 +7,8 @@ gui -
 
 slef - 
     trains to space
-
-
+    revolver(aka russian roulette)
+    casino
 
 TODO
     -
