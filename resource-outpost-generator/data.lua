@@ -3,10 +3,10 @@ local outpostGeneratorPrototype = {
 	name = "gen-shortcut",
 	action = "lua",
 	localised_name = { "shortcut.outpostGeneratorPrototype" },
-	icon = "__base__/graphics/icons/signal/signal-mining.png",
-	small_icon = "__base__/graphics/icons/signal/signal-mining.png",
-	icon_size = 64,
-	small_icon_size = 64
+	icon = "__resource-outpost-generator__/pixel-art-factory.png",
+	small_icon = "__resource-outpost-generator__/pixel-art-factory.png",
+	icon_size = 50,
+	small_icon_size = 50
 }
 data:extend({ outpostGeneratorPrototype })
 
@@ -14,8 +14,8 @@ local outpostGeneratorToolPrototype = {
 	type = "selection-tool",
 	name = "gen-tool",
 	--action = "lua",
-	icon = "__base__/graphics/icons/signal/signal-mining.png",
-	icon_size = 64,
+	icon = "__resource-outpost-generator__/pixel-art-factory.png",
+	icon_size = 50,
 	flags = { "only-in-cursor", "not-stackable", "spawnable" },
 	auto_recycle = "false",
 	subgroup = "tool",
