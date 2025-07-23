@@ -18,3 +18,26 @@ script.on_event(defines.events.on_lua_shortcut, function(event)
 		player.cursor_stack.set_stack { name = "gen-tool", count = 1 }
 	end
 end)
+
+script.on_event(defines.events.on_player_selected_area, function(event)
+	if event.item == "gen-tool" then
+		--print("serpent: ", serpent.block(event.entities))
+		--[[	local resources = {
+			["coal"] = true,
+			["stone"] = true,
+			["copper-ore"] = true,
+			["crude-oil"] = true
+		}]]
+		for i, e in ipairs(event.entities) do
+			--print(i, e.name, e.gps_tag)
+			if e.name == "crude-oil" then
+				print("build crude-oil outpost at:")
+				x = e.position.x
+				y = e.position.y
+				print("x: ", x, " y: ", y)
+				game.print("build crude-oil outpost at:")
+				game.print("x: " .. x .. " y: " ..  y)
+			end
+		end
+	end
+end)
