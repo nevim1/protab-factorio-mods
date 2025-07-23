@@ -3,29 +3,18 @@ local outpostGeneratorPrototype = {
 	name = "gen-shortcut",
 	action = "lua",
 	localised_name = { "shortcut.outpostGeneratorPrototype" },
-	icon = "__base__/graphics/icons/signal/signal-minig.png",
-	small_icon = "__base__/graphics/icons/shortcut-toolbar/mip/import-string-x24.png",
-	icon_size = 56,
+	icon = "__base__/graphics/icons/signal/signal-mining.png",
+	small_icon = "__base__/graphics/icons/signal/signal-mining.png",
+	icon_size = 64,
 	small_icon_size = 24
 }
 data:extend({ outpostGeneratorPrototype })
-
-local shortcutProto = data.raw["shortcut"]
-print('------------- shortcut dump -------------')
-for i, j in pairs(shortcutProto) do
-	print(i)
-	for k, l in pairs(j) do
-		print('+', k, l)
-	end
-end
-print('------------- shortcut dump -------------')
-
 
 local outpostGeneratorToolPrototype = {
 	type = "selection-tool",
 	name = "gen-tool",
 	--action = "lua",
-	icon = "__base__/graphics/icons/signal/signal-minig.png",
+	icon = "__base__/graphics/icons/signal/signal-mining.png",
 	icon_size = 64,
 	flags = { "only-in-cursor", "not-stackable", "spawnable" },
 	auto_recycle = "false",
