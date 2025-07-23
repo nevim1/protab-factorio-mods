@@ -1,6 +1,6 @@
 local outpostGeneratorPrototype = {
 	type = "shortcut",
-	name = "print-hello-to-console",
+	name = "gen-shortcut",
 	action = "lua",
 	localised_name = { "shortcut.outpostGeneratorPrototype" },
 	icon = "__base__/graphics/icons/signal/signal-minig.png",
