@@ -12,11 +12,7 @@ script.on_event(defines.events.on_lua_shortcut, function(event)
 		game.print('hello from our shortcut')
 		for i, j in pairs(event) do
 			print(i, j)
-<<<<<<< Updated upstream
-			game.print(i .. ', ' .. j)
-=======
 			game.print(i .. ': ' ..  j)
->>>>>>> Stashed changes
 		end
 		local player = game.players[event.player_index]
 		player.cursor_stack.set_stack { name = "gen-tool", count = 1 }
