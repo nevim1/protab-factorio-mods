@@ -11,5 +11,5 @@ slef -
 	casino
 
 TODO
-	- find or make a icon for shortcut (signal/signal-minig looks good)
-	
+	- add a key shortcut for resourceOutputGenerator
+	-	
