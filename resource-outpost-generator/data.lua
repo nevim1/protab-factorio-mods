@@ -25,14 +25,14 @@ local outpostGeneratorToolPrototype = {
 	draw_label_for_cursor_render = true,
 	select = {
 		border_color = { 0, 1, 0 },
-		mode = { "blueprint", "avoid-rolling-stock", "avoid-vehicle" },
+		mode = { "any-entity", "avoid-rolling-stock", "avoid-vehicle" },
 		cursor_box_type = "copy",
 		started_sound = { filename = "__core__/sound/blueprint-select.ogg" },
 		ended_sound = { filename = "__core__/sound/blueprint-create.ogg" }
 	},
 	alt_select = {
 		border_color = { 0, 0, 1 },
-		mode = { "blueprint" },
+		mode = { "any-entity" },
 		cursor_box_type = "copy"
 	}
 }

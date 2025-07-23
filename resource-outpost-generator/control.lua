@@ -18,3 +18,12 @@ script.on_event(defines.events.on_lua_shortcut, function(event)
 		player.cursor_stack.set_stack { name = "gen-tool", count = 1 }
 	end
 end)
+
+script.on_event(defines.events.on_player_selected_area, function(event)
+	if event.item == "gen-tool" then
+		--print("serpent: ", serpent.block(event.entities))
+		for i, e in ipairs(event.entities) do
+			print(i, e.name, e.gps_tag)
+		end
+	end
+end)
