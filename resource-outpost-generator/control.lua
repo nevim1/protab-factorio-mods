@@ -8,6 +8,18 @@ script.on_load(function()
 	--game.print('Hello, world! Greets load')
 end)
 
+--[[
 script.on_event(defines.events.on_tick, function(event)
 	game.print(event.tick)
+end)
+]]
+
+script.on_event(defines.events.on_lua_shortcut, function(event)
+	if event.prototype_name == 'print-hello-to-console' then
+		game.print('hello from our shortcut')
+		for i,j in pairs(event) do
+			print(i, j)
+			game.print(i .. ', ' ..  j)
+		end
+	end
 end)
