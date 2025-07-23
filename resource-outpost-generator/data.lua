@@ -2,6 +2,7 @@ local outpostGeneratorPrototype = {
 	type = "shortcut",
 	name = "print-hello-to-console",
 	action = "lua",
+	localised_name = { "shortcut.outpostGeneratorPrototype" },
 	icon = "__base__/graphics/icons/shortcut-toolbar/mip/import-string-x56.png",
 	small_icon = "__base__/graphics/icons/shortcut-toolbar/mip/import-string-x24.png",
 	icon_size = 56,
@@ -24,7 +25,7 @@ local outpostGeneratorToolPrototype = {
 	type = "selection-tool",
 	name = "gen-tool",
 	--action = "lua",
-	icon = "__base__/graphics/icons/shapes/shape-diagonal.png",
+	icon = "__base__/graphics/icons/signal/signal-minig.png",
 	icon_size = 64,
 	flags = { "only-in-cursor", "not-stackable", "spawnable" },
 	auto_recycle = "false",
@@ -41,8 +42,8 @@ local outpostGeneratorToolPrototype = {
 		ended_sound = { filename = "__core__/sound/blueprint-create.ogg" }
 	},
 	alt_select = {
-		border_color = {0, 0, 1},
-		mode = {"blueprint"},
+		border_color = { 0, 0, 1 },
+		mode = { "blueprint" },
 		cursor_box_type = "copy"
 	}
 }
