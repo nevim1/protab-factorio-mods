@@ -32,8 +32,8 @@ local outpostGeneratorToolPrototype = {
 	},
 	alt_select = {
 		border_color = { 0, 0, 1 },
-		mode = { "any-entity" },
-		cursor_box_type = "copy"
+		mode = { "nothing" },
+		cursor_box_type = "not-allowed"
 	}
 }
 data:extend({ outpostGeneratorToolPrototype })
