@@ -6,7 +6,7 @@ local outpostGeneratorPrototype = {
 	icon = "__base__/graphics/icons/signal/signal-mining.png",
 	small_icon = "__base__/graphics/icons/signal/signal-mining.png",
 	icon_size = 64,
-	small_icon_size = 24
+	small_icon_size = 64
 }
 data:extend({ outpostGeneratorPrototype })
 
