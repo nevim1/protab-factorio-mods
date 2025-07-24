@@ -7,33 +7,60 @@ script.on_load(function()
 	print('Hello, world! Greets load')
 end)
 
--- startingPositions :: array[MapPosition], endingPositions :: array[MapPosition]
--- returns positions on path: array[MapPositions]
---[[
-local function bfsWrapper(startingPositions, endingPositions)
-	local function bfs(path, visited, position)
-		if position in visited then
-			return
-		end
-	end
-end
-]]
 local function MPtoStr(MapPosition)
 	return MapPosition.x .. ', ' .. MapPosition.y
 end
 
--- queue: array[position, path: array[position], visited]
-local function bfs(path, queue, goals)
-	while #queue ~= 0 do
-		local currentPosition = queue[0].position
-		local visited = queue[0].visited
-		queue:remove(0)
-		if surface.can_place_entity({ name = 'pipe', position = currentPosition }) then
-			if visited[MPtoStr(currentPosition)] ~= true then
-				visited[MPtoStr(currentPosition)] = true
+-- startingPositions :: array[MapPosition], endingPositions :: array[MapPosition]
+-- returns positions on path: array[MapPositions]
+local function bfsWrapper(input)
+	local goals = {}
+	local startPos = input.startPos
+	local endPos = input.endPos
+	local surface = input.surface
+	table.insert(goals, endPos)
+	goals[MPtoStr(endPos)] = true
+	print(serpent.block(goals))
+	-- queue: array[position, path: string, visited]
+	local function bfs(bfsGoals, bfsStartPos, bfsSurface)
+		local queue = {}
+		table.insert(queue, {position=bfsStartPos, path='', visited={}})
+		local directions = { N = {x=0,y=-1}, S = {x=0, y=1}, W = {x=-1,y=0}, E = {x=1,y=0} }
+		local currentPath = ''
+		local found = false
+		while #queue ~= 0 do
+			print(serpent.block(queue))
+
+			game.print('new iteration of main while loop')
+			local currentPosition = queue[1].position
+			local currentVisited = queue[1].visited
+			currentPath = queue[1].path
+			table.remove(queue, 1)
+			if bfsSurface.can_place_entity({ name = 'pipe', position = currentPosition }) then
+				game.print(MPtoStr(currentPosition))
+				if currentVisited[MPtoStr(currentPosition)] ~= true then
+					currentVisited[MPtoStr(currentPosition)] = true
+					if bfsGoals[MPtoStr(currentPosition)] then
+						found = true
+						break
+					end
+					for dir, vec in pairs(directions) do
+						table.insert(queue,{position = {x= currentPosition.x + vec.x, y = currentPosition.y + vec.y},
+							path = currentPath .. dir,
+							visited = currentVisited
+						})
+					end
+				end
 			end
 		end
+		if found then
+			game.print('path found')
+			game.print('path is: ' .. currentPath)
+		else
+			game.print('path not found :(')
+		end
 	end
+	return bfs(goals,startPos,surface)
 end
 
 --SHORTCUT EVENTS
@@ -107,7 +134,8 @@ script.on_event(defines.events.on_player_alt_selected_area, function(event)
 	end
 end)
 
-
+-- tmp
+pastClicks = {}
 --OTHER EVENTS
 
 script.on_event("CustomRightClick", function(event)
@@ -115,4 +143,5 @@ script.on_event("CustomRightClick", function(event)
 	local y = event.cursor_position.y
 	print("Right click registered at: ", "x: " .. x, "y: " .. y)
 	game.print("Right click registered")
+	bfsWrapper({startPos={x=50.5,y=-394.5}, endPos={x=53.5, y=-390.5}, surface=game.get_surface('nauvis')})
 end)
