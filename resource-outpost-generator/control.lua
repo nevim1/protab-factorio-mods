@@ -26,7 +26,7 @@ local function bfs(startingPositions, endingPositions)
 end
 
 script.on_event("CustomRightClick", function(event)
-	print("Right click registered")
+	print("Right click registered at: ", event.MapPosition, " with type: ", type(event.MapPosition))
 	game.print("Right click registered")
 end)
 
