@@ -28,19 +28,19 @@ local function bfsWrapper(input)
 		local directions = { N = {x=0,y=-1}, S = {x=0, y=1}, W = {x=-1,y=0}, E = {x=1,y=0} }
 		local currentPath = ''
 		local found = false
+		local index = 1
 		while #queue ~= 0 do
-			print(serpent.block(queue))
-
 			game.print('new iteration of main while loop')
-			local currentPosition = queue[1].position
-			local currentVisited = queue[1].visited
-			currentPath = queue[1].path
-			table.remove(queue, 1)
+			local currentPosition = queue[index].position
+			local currentVisited = queue[index].visited
+			currentPath = queue[index].path
+			index = index + 1
 			if bfsSurface.can_place_entity({ name = 'pipe', position = currentPosition }) then
-				game.print(MPtoStr(currentPosition))
-				if currentVisited[MPtoStr(currentPosition)] ~= true then
-					currentVisited[MPtoStr(currentPosition)] = true
-					if bfsGoals[MPtoStr(currentPosition)] then
+				local StrPos = MPtoStr(currentPosition)
+				game.print(StrPos)
+				if currentVisited[StrPos] ~= true then
+					currentVisited[StrPos] = true
+					if bfsGoals[StrPos] then
 						found = true
 						break
 					end
