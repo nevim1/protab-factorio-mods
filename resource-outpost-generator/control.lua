@@ -1,3 +1,5 @@
+--:require("math")
+
 script.on_init(function()
 	print('Hello, world! Greets init')
 	game.print('Hello, world! Greets init')
@@ -16,7 +18,9 @@ end
 local function bfsWrapper(input)
 	local goals = {}
 	local startPos = input.startPos
+	print("startPos: ", serpent.block(startPos))
 	local endPos = input.endPos
+	print("endPos: ", serpent.block(endPos))
 	local surface = input.surface
 	table.insert(goals, endPos)
 	goals[MPtoStr(endPos)] = true
@@ -24,8 +28,8 @@ local function bfsWrapper(input)
 	-- queue: array[position, path: string, visited]
 	local function bfs(bfsGoals, bfsStartPos, bfsSurface)
 		local queue = {}
-		table.insert(queue, {position=bfsStartPos, path='', visited={}})
-		local directions = { N = {x=0,y=-1}, S = {x=0, y=1}, W = {x=-1,y=0}, E = {x=1,y=0} }
+		table.insert(queue, { position = bfsStartPos, path = '', visited = {} })
+		local directions = { N = { x = 0, y = -1 }, S = { x = 0, y = 1 }, W = { x = -1, y = 0 }, E = { x = 1, y = 0 } }
 		local currentPath = ''
 		local found = false
 		local index = 1
@@ -45,7 +49,8 @@ local function bfsWrapper(input)
 						break
 					end
 					for dir, vec in pairs(directions) do
-						table.insert(queue,{position = {x= currentPosition.x + vec.x, y = currentPosition.y + vec.y},
+						table.insert(queue, {
+							position = { x = currentPosition.x + vec.x, y = currentPosition.y + vec.y },
 							path = currentPath .. dir,
 							visited = currentVisited
 						})
@@ -60,7 +65,7 @@ local function bfsWrapper(input)
 			game.print('path not found :(')
 		end
 	end
-	return bfs(goals,startPos,surface)
+	return bfs(goals, startPos, surface)
 end
 
 --SHORTCUT EVENTS
@@ -137,11 +142,17 @@ end)
 -- tmp
 pastClicks = {}
 --OTHER EVENTS
-
+local RightClickTable = {}
 script.on_event("CustomRightClick", function(event)
 	local x = event.cursor_position.x
 	local y = event.cursor_position.y
+	RightClickTable = { ["x"] = x, ["y"] = y }
+	print("RightClickTable: ", serpent.block(RightClickTable))
 	print("Right click registered at: ", "x: " .. x, "y: " .. y)
 	game.print("Right click registered")
-	bfsWrapper({startPos={x=50.5,y=-394.5}, endPos={x=53.5, y=-390.5}, surface=game.get_surface('nauvis')})
+	local rctx = math.floor(RightClickTable["x"])+0.5
+	local rcty = math.floor(RightClickTable["y"])+0.5
+	print("rctx: ", rctx, "rcty: ", rcty)
+	bfsWrapper({ startPos = { x = -60.5, y = -350.5 }, endPos = { x = rctx, y = rcty}, surface =
+	game.get_surface('nauvis') })
 end)
