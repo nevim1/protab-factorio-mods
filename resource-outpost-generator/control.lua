@@ -26,7 +26,9 @@ local function bfs(startingPositions, endingPositions)
 end
 
 script.on_event("CustomRightClick", function(event)
-	print("Right click registered at: ", event.MapPosition, " with type: ", type(event.MapPosition))
+	local x = event.cursor_position.x
+	local y = event.cursor_position.y
+	print("Right click registered at: ", "x: " .. x, "y: " .. y)
 	game.print("Right click registered")
 end)
 
@@ -44,8 +46,8 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 			--print(i, e.name, e.gps_tag)
 			if e.name == "crude-oil" then
 				print("build crude-oil outpost at:")
-				x = e.position.x
-				y = e.position.y
+				local x = e.position.x
+				local y = e.position.y
 				print("x: ", x, " y: ", y)
 				game.print("build crude-oil outpost at:")
 				game.print("x: " .. x .. " y: " .. y)
