@@ -45,14 +45,24 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 				game.print("x: " .. x .. " y: " .. y)
 				print("crude_oil bounding_box: ", serpent.block(e.bounding_box))
 				--game.print("bounding_box: ".. e.bounding_box)
-
-
-				event.surface.create_entity({
-					name = 'entity-ghost',
-					position = e.position,
-					force = game.players[event.player_index].force,
-					inner_name = 'pumpjack'
-				})
+				setting_val = settings.global["AutoBuildOutpost"].value
+				print("setting_cal:", setting_val)
+				if setting_val == true then
+					event.surface.create_entity({
+						name = 'pumpjack',
+						position = e.position,
+						force = game.players[event.player_index].force,
+					})
+				elseif setting_val == false then
+					event.surface.create_entity({
+						name = 'entity-ghost',
+						position = e.position,
+						force = game.players[event.player_index].force,
+						inner_name = 'pumpjack'
+					})
+				else
+					print("wtf is this bullshit = broekn setting")
+				end
 			end
 		end
 	end
