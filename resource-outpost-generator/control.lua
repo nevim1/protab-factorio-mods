@@ -36,11 +36,16 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 				y = e.position.y
 				print("x: ", x, " y: ", y)
 				game.print("build crude-oil outpost at:")
-				game.print("x: " .. x .. " y: " ..	y)
+				game.print("x: " .. x .. " y: " .. y)
+				print("crude_oil bounding_box: ", serpent.block(e.bounding_box))
+				--game.print("bounding_box: ".. e.bounding_box)
+
+
 				event.surface.create_entity({
 					name = 'pumpjack',
 					position = e.position,
-					force = game.players[event.player_index].force})
+					force = game.players[event.player_index].force
+				})
 			end
 		end
 	end
