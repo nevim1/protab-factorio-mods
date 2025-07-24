@@ -42,11 +42,24 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 
 
 				event.surface.create_entity({
-					name = 'pumpjack',
+					name = 'entity-ghost',
 					position = e.position,
-					force = game.players[event.player_index].force
+					force = game.players[event.player_index].force,
+					inner_name = 'pumpjack'
 				})
 			end
+		end
+	end
+end)
+
+
+script.on_event(defines.events.on_player_alt_selected_area, function(event)
+	if event.item == "gen-tool" then
+		for i, j in pairs(event.area) do
+			game.print(i)
+			game.print(j)
+			print(i)
+			print(j)
 		end
 	end
 end)
