@@ -25,6 +25,12 @@ local function bfs(startingPositions, endingPositions)
 
 end
 
+script.on_event("CustomRightClick", function(event)
+	print("Right click registered")
+	game.print("Right click registered")
+end)
+
+
 script.on_event(defines.events.on_player_selected_area, function(event)
 	if event.item == "gen-tool" then
 		--print("serpent: ", serpent.block(event.entities))
