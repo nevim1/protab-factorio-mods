@@ -49,6 +49,14 @@ local function bfs(path, queue, goals)
 end
 
 
+script.on_event("CustomRightClick", function(event)
+	local x = event.cursor_position.x
+	local y = event.cursor_position.y
+	print("Right click registered at: ", "x: " .. x, "y: " .. y)
+	game.print("Right click registered")
+end)
+
+
 script.on_event(defines.events.on_player_selected_area, function(event)
 	if event.item == "gen-tool" then
 		--print("serpent: ", serpent.block(event.entities))
@@ -62,13 +70,14 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 			--print(i, e.name, e.gps_tag)
 			if e.name == "crude-oil" then
 				print("build crude-oil outpost at:")
-				x = e.position.x
-				y = e.position.y
+				local x = e.position.x
+				local y = e.position.y
 				print("x: ", x, " y: ", y)
 				game.print("build crude-oil outpost at:")
 				game.print("x: " .. x .. " y: " .. y)
 				print("crude_oil bounding_box: ", serpent.block(e.bounding_box))
 				--game.print("bounding_box: ".. e.bounding_box)
+
 				pumpjack = {
 					name = 'entity-ghost',
 					position = e.position,
@@ -76,6 +85,15 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 					inner_name = 'pumpjack',
 					direction = defines.direction.south
 				}
+				setting_val = settings.global["AutoBuildOutpost"].value
+				print("setting_cal:", setting_val)
+				if setting_val == true then
+					pumpjack.name = 'pumpjack'
+				elseif setting_val == false then
+					type(setting_val)
+				else
+					print("wtf is this bullshit = broekn setting")
+				end
 				if event.surface.can_place_entity(pumpjack) then
 					event.surface.create_entity(pumpjack)
 				end
