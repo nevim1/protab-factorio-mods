@@ -20,10 +20,34 @@ script.on_event(defines.events.on_lua_shortcut, function(event)
 end)
 
 -- startingPositions :: array[MapPosition], endingPositions :: array[MapPosition]
--- returns: array[MapPositions]
-local function bfs(startingPositions, endingPositions)
-
+-- returns positions on path: array[MapPositions]
+--[[
+local function bfsWrapper(startingPositions, endingPositions)
+	local function bfs(path, visited, position)
+		if position in visited then
+			return
+		end
+	end
 end
+]]
+local function MPtoStr(MapPosition)
+	return MapPosition.x .. ', ' .. MapPosition.y
+end
+
+-- queue: array[position, path: array[position], visited]
+local function bfs(path, queue, goals)
+	while #queue ~= 0 do
+		local currentPosition = queue[0].position
+		local visited = queue[0].visited
+		queue:remove(0)
+		if surface.can_place_entity({name = 'pipe', position = currentPosition}) then
+			if visited[MPtoStr(currentPosition)] ~= true then
+				visited[MPtoStr(currentPosition)] = true
+			end
+		end
+	end
+end
+
 
 script.on_event(defines.events.on_player_selected_area, function(event)
 	if event.item == "gen-tool" then
@@ -45,14 +69,20 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 				game.print("x: " .. x .. " y: " .. y)
 				print("crude_oil bounding_box: ", serpent.block(e.bounding_box))
 				--game.print("bounding_box: ".. e.bounding_box)
-
-
-				event.surface.create_entity({
+				pumpjack = {
 					name = 'entity-ghost',
 					position = e.position,
 					force = game.players[event.player_index].force,
-					inner_name = 'pumpjack'
-				})
+					inner_name = 'pumpjack',
+					direction = defines.direction.south
+				}
+				if event.surface.can_place_entity(pumpjack) then
+					event.surface.create_entity(pumpjack)
+				end
+				for j, _ in pairs(defines.direction) do
+					game.print(j)
+					print(j, _)
+				end
 			end
 		end
 	end
