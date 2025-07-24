@@ -19,6 +19,12 @@ script.on_event(defines.events.on_lua_shortcut, function(event)
 	end
 end)
 
+-- startingPositions :: array[MapPosition], endingPositions :: array[MapPosition]
+-- returns: array[MapPositions]
+local function bfs(startingPositions, endingPositions)
+
+end
+
 script.on_event(defines.events.on_player_selected_area, function(event)
 	if event.item == "gen-tool" then
 		--print("serpent: ", serpent.block(event.entities))
