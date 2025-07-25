@@ -1,6 +1,6 @@
 IDEAS
 ==========
-gui -			
+gui - (GAVE UP, NOT USING ANY, NO TIME)			
 	autobuild main bus	- puzzle pieces -> slot together
 																					- setting for autobuild(require mats/not)/blueprint/ 
 	remote ore outposts - autoconnect to main
@@ -11,5 +11,6 @@ slef -
 	casino
 
 TODO
-	- add a key shortcut for resourceOutputGenerator
-	-	
+	- make bfs route from each pumpjack
+	- 
+
