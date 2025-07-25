@@ -144,8 +144,8 @@ script.on_event(defines.events.on_player_alt_selected_area, function(event)
 end)
 
 --OTHER EVENTS
-local RightClickTable = {}
-script.on_event("CustomRightClick", function(event)
+local CustomPosTable = {}
+script.on_event("CustomPosPicker", function(event)
 	local playerN = game.get_player(event.player_index)
 	local stack = playerN.cursor_stack
 	if stack and stack.valid_for_read then
@@ -153,16 +153,16 @@ script.on_event("CustomRightClick", function(event)
 		if stack.name == "gen-tool" then
 			local x = event.cursor_position.x
 			local y = event.cursor_position.y
-			RightClickTable = { ["x"] = x, ["y"] = y }
-			-- print("RightClickTable: ", serpent.block(RightClickTable))
+			CustomPosTable = { ["x"] = x, ["y"] = y }
+			-- print("CustomPosTable: ", serpent.block(CustomPosTable))
 			print("Right click registered at: ", "x: " .. x, "y: " .. y)
-			game.print("Right click registered")
-			local rctx = math.floor(RightClickTable["x"]) + 0.5
-			local rcty = math.floor(RightClickTable["y"]) + 0.5
-			print("rctx: ", rctx, "rcty: ", rcty)
+			game.print("Custom Click registered")
+			local cptx = math.floor(CustomPosTable["x"]) + 0.5
+			local cpty = math.floor(CustomPosTable["y"]) + 0.5
+			print("cptx: ", cptx, "cpty: ", cpty)
 			bfsWrapper({
 				startPos = { x = -60.5, y = -350.5 },
-				endPos = { x = rctx, y = rcty },
+				endPos = { x = cptx, y = cpty },
 				surface = game.get_surface('nauvis'),
 				player = event.player_index
 			})

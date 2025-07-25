@@ -37,11 +37,11 @@ local outpostGeneratorToolPrototype = {
 	}
 }
 data:extend({ outpostGeneratorToolPrototype })
-local CustomRightClick = {
+local CustomPosPicker = {
 	type = "custom-input",
-	name = "CustomRightClick",
+	name = "CustomPosPicker",
 	action = "lua",
 	key_sequence = "mouse-button-2",
 
 }
-data:extend({ CustomRightClick })
+data:extend({ CustomPosPicker })
