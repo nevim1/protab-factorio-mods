@@ -76,11 +76,11 @@ end
 
 script.on_event(defines.events.on_lua_shortcut, function(event)
 	if event.prototype_name == 'gen-shortcut' then
-		game.print('hello from our shortcut')
-		for i, j in pairs(event) do
-			print(i, j)
-			game.print(i .. ': ' .. j)
-		end
+		--	game.print('hello from our shortcut')
+		-- for i, j in pairs(event) do
+		-- 	print(i, j)
+		-- 	game.print(i .. ': ' .. j)
+		-- end
 		local player = game.players[event.player_index]
 		player.cursor_stack.set_stack { name = "gen-tool", count = 1 }
 	end
@@ -98,7 +98,7 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 				print("build crude-oil outpost at:")
 				local x = e.position.x
 				local y = e.position.y
-				print("x: ", x, " y: ", y)
+				-- print("x: ", x, " y: ", y)
 				game.print("build crude-oil outpost at:")
 				game.print("x: " .. x .. " y: " .. y)
 				print("crude_oil bounding_box: ", serpent.block(e.bounding_box))
@@ -111,7 +111,7 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 					direction = defines.direction.south
 				}
 				local setting_val = settings.global["AutoBuildOutpost"].value
-				print("setting_cal:", setting_val)
+				-- print("setting_cal:", setting_val)
 				if setting_val == true then
 					pumpjack.name = 'pumpjack'
 				elseif setting_val == false then
@@ -150,22 +150,28 @@ script.on_event("CustomRightClick", function(event)
 	local stack = playerN.cursor_stack
 	if stack and stack.valid_for_read then
 		print("player cursor stack: ", stack.name, "and type: ", type(playerN.cursor_stack))
-		local x = event.cursor_position.x
-		local y = event.cursor_position.y
-		RightClickTable = { ["x"] = x, ["y"] = y }
-		print("RightClickTable: ", serpent.block(RightClickTable))
-		print("Right click registered at: ", "x: " .. x, "y: " .. y)
-		game.print("Right click registered")
-		local rctx = math.floor(RightClickTable["x"]) + 0.5
-		local rcty = math.floor(RightClickTable["y"]) + 0.5
-		print("rctx: ", rctx, "rcty: ", rcty)
-		bfsWrapper({
-			startPos = { x = -60.5, y = -350.5 },
-			endPos = { x = rctx, y = rcty },
-			surface = game.get_surface('nauvis'),
-			player = event.player_index
-		})
+		if stack.name == "gen-tool" then
+			local x = event.cursor_position.x
+			local y = event.cursor_position.y
+			RightClickTable = { ["x"] = x, ["y"] = y }
+			-- print("RightClickTable: ", serpent.block(RightClickTable))
+			print("Right click registered at: ", "x: " .. x, "y: " .. y)
+			game.print("Right click registered")
+			local rctx = math.floor(RightClickTable["x"]) + 0.5
+			local rcty = math.floor(RightClickTable["y"]) + 0.5
+			print("rctx: ", rctx, "rcty: ", rcty)
+			bfsWrapper({
+				startPos = { x = -60.5, y = -350.5 },
+				endPos = { x = rctx, y = rcty },
+				surface = game.get_surface('nauvis'),
+				player = event.player_index
+			})
+		else
+			game.print("Wrong item held")
+			print("worng item held")
+		end
 	else
+		game.print("!!STACK EMPTY!!")
 		print("stack empty")
 	end
 end)
