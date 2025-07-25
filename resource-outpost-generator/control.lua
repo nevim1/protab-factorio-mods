@@ -15,6 +15,7 @@ end
 
 -- startingPositions :: array[MapPosition], endingPositions :: array[MapPosition]
 -- returns positions on path: array[MapPositions]
+
 local function bfsWrapper(input)
 	local goals = {}
 	local startPos = input.startPos
@@ -25,8 +26,9 @@ local function bfsWrapper(input)
 	table.insert(goals, endPos)
 	goals[MPtoStr(endPos)] = true
 	print(serpent.block(goals))
+	local player = input.player
 	-- queue: array[position, path: string, visited]
-	local function bfs(bfsGoals, bfsStartPos, bfsSurface)
+	local function bfs(bfsGoals, bfsStartPos, bfsSurface, bfsPlayer)
 		local queue = {}
 		table.insert(queue, { position = bfsStartPos, path = '', visited = {} })
 		local directions = { N = { x = 0, y = -1 }, S = { x = 0, y = 1 }, W = { x = -1, y = 0 }, E = { x = 1, y = 0 } }
@@ -39,6 +41,10 @@ local function bfsWrapper(input)
 			local currentVisited = queue[index].visited
 			currentPath = queue[index].path
 			index = index + 1
+			if index == settings.get_player_settings(bfsPlayer)["bfsMaxDepth"].value then
+				game.print("Exceeded bfsMaxDepth, stopping action")
+				break
+			end
 			if bfsSurface.can_place_entity({ name = 'pipe', position = currentPosition }) then
 				local StrPos = MPtoStr(currentPosition)
 				game.print(StrPos)
@@ -65,7 +71,7 @@ local function bfsWrapper(input)
 			game.print('path not found :(')
 		end
 	end
-	return bfs(goals, startPos, surface)
+	return bfs(goals, startPos, surface, player)
 end
 
 --SHORTCUT EVENTS
@@ -154,5 +160,5 @@ script.on_event("CustomRightClick", function(event)
 	local rcty = math.floor(RightClickTable["y"])+0.5
 	print("rctx: ", rctx, "rcty: ", rcty)
 	bfsWrapper({ startPos = { x = -60.5, y = -350.5 }, endPos = { x = rctx, y = rcty}, surface =
-	game.get_surface('nauvis') })
+	game.get_surface('nauvis'), player = event.player_index })
 end)
