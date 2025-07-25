@@ -23,6 +23,7 @@ local function bfsWrapper(input)
 	local player = input.player
 
 	local function bfs(pumpjacks)
+		local outPipes = {}
 		local occupied = {}
 		for _,pumpjack in ipairs(pumpjacks) do
 			for _, pos in ipairs({{x=0,y=0},{x=1,y=0},{x=1,y=1},{x=0,y=1},{x=-1,y=1},{x=-1,y=0},{x=-1,y=-1},{x=0,y=-1},{x=1,y=-1}}) do
@@ -48,7 +49,7 @@ local function bfsWrapper(input)
 
 			local setting = settings.get_player_settings(player)["bfsMaxDepth"].value 
 
-			while #queue ~= index do
+			while queue[index] do
 				if index == setting then
 					game.print("Exceeded bfsMaxDepth, skipping pumpjack")
 					break
@@ -92,11 +93,12 @@ local function bfsWrapper(input)
 					table.insert(goals, tile)
 					tile = prevTile[MPtoStr(tile)]
 				end
-				return pipes
+				--return pipes
 			else
 				game.print('path not found :(')
 			end
 		end
+		return goals
 	end
 	return bfs
 end
@@ -120,10 +122,34 @@ end)
 --tmp
 local lastPumpjacksSelection = {}
 --SELECTION EVENTS
+local function placeGrid(lx, rx, ry, ly, template, surface)
+    for i = math.min(lx, rx), math.max(rx, lx), 5 do
+        for j = math.min(ly, ry), math.max(ry, ly), 5 do
+            template.position = { ["x"] = i, ["y"] = j }
+            if surface.can_place_entity(template) then
+                surface.create_entity(template)
+            end
+        end
+    end
+end
 
 script.on_event(defines.events.on_player_selected_area, function(event)
 	lastPumpjacksSelection = {}
 	if event.item == "gen-tool" then
+		local powerpole = {
+            name = "entity-ghost",
+            position = leftCorner,
+            force = game.players[event.player_index].force,
+            inner_name = "small-electric-pole"
+        }
+		local leftCorner = event.area["left_top"]
+        local rightCorner = event.area["right_bottom"]
+        local lx = leftCorner["x"]
+        local rx = rightCorner["x"]
+        local ry = rightCorner["y"]
+        local ly = leftCorner["y"]
+        placeGrid(lx, rx, ry, ly, powerpole, event.surface)
+
 		for i, e in ipairs(event.entities) do
 			if e.name == "crude-oil" then
 				print("build crude-oil outpost at:")
@@ -173,6 +199,9 @@ script.on_event(defines.events.on_player_alt_selected_area, function(event)
 		end
 	end
 end)
+
+
+
 
 -- tmp
 pastClicks = {}
