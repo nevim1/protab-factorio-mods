@@ -117,7 +117,7 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 				if setting_val == true then
 					pumpjack.name = 'pumpjack'
 				elseif setting_val == false then
-					type(setting_val)
+					type(setting_val)				-- this is useless, it's here just to fill the space
 				else
 					print("wtf is this bullshit = broekn setting")
 				end
