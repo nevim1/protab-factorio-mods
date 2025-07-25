@@ -88,12 +88,28 @@ end)
 
 
 
-
+local leftCorner = {}
+local rightCorner = {}
 --SELECTION EVENTS
-
 script.on_event(defines.events.on_player_selected_area, function(event)
 	if event.item == "gen-tool" then
-		for i, e in ipairs(event.entities) do
+		leftCorner = event.area["left_top"]
+		rightCorner = event.area["right_bottom"]
+		print("leftCorner: ", serpent.block(leftCorner), "rightCorner: ", serpent.block(rightCorner))
+		for _, e in ipairs(event.entities) do
+			local pumpjack = {
+				name = 'entity-ghost',
+				position = e.position,
+				force = game.players[event.player_index].force,
+				inner_name = 'pumpjack',
+				direction = defines.direction.south
+			}
+			local powerpole = {
+				name = "entity-ghost",
+				position = leftCorner,
+				force = game.players[event.player_index].force,
+				inner_name = "small_electric_pole"
+			}
 			if e.name == "crude-oil" then
 				print("build crude-oil outpost at:")
 				local x = e.position.x
@@ -103,28 +119,31 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 				game.print("x: " .. x .. " y: " .. y)
 				print("crude_oil bounding_box: ", serpent.block(e.bounding_box))
 
-				local pumpjack = {
-					name = 'entity-ghost',
-					position = e.position,
-					force = game.players[event.player_index].force,
-					inner_name = 'pumpjack',
-					direction = defines.direction.south
-				}
 				local setting_val = settings.global["AutoBuildOutpost"].value
 				-- print("setting_cal:", setting_val)
 				if setting_val == true then
 					pumpjack.name = 'pumpjack'
+					powerpole.name = "small-electric-pole"
 				elseif setting_val == false then
-					type(setting_val) -- this is useless, it's here just to fill the space
+					-- nic
 				else
 					print("wtf is this bullshit = broekn setting")
 				end
 				if event.surface.can_place_entity(pumpjack) then
 					event.surface.create_entity(pumpjack)
 				end
-				for j, _ in pairs(defines.direction) do
-					game.print(j)
-					print(j, _)
+				local lx = leftCorner["x"]
+				local rx = rightCorner["x"]
+				local ry = rightCorner["y"]
+				local ly = leftCorner["y"]
+				for i = math.min(lx, rx), math.max(rx, lx), 3 do
+					for j = math.min(ly, ry), math.max(ry, ly), 3 do
+						powerpole.position = { ["x"] = i, ["y"] = j }
+						print(serpent.block(powerpole.position))
+						if event.surface.can_place_entity(powerpole) then
+							event.surface.create_entity(powerpole)
+						end
+					end
 				end
 			end
 		end
