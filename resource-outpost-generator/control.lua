@@ -1,5 +1,3 @@
---:require("math")
-
 script.on_init(function()
 	print('Hello, world! Greets init')
 	game.print('Hello, world! Greets init')
@@ -117,7 +115,7 @@ script.on_event(defines.events.on_player_selected_area, function(event)
 				if setting_val == true then
 					pumpjack.name = 'pumpjack'
 				elseif setting_val == false then
-					type(setting_val)				-- this is useless, it's here just to fill the space
+					type(setting_val) -- this is useless, it's here just to fill the space
 				else
 					print("wtf is this bullshit = broekn setting")
 				end
@@ -145,20 +143,29 @@ script.on_event(defines.events.on_player_alt_selected_area, function(event)
 	end
 end)
 
--- tmp
-pastClicks = {}
 --OTHER EVENTS
 local RightClickTable = {}
 script.on_event("CustomRightClick", function(event)
-	local x = event.cursor_position.x
-	local y = event.cursor_position.y
-	RightClickTable = { ["x"] = x, ["y"] = y }
-	print("RightClickTable: ", serpent.block(RightClickTable))
-	print("Right click registered at: ", "x: " .. x, "y: " .. y)
-	game.print("Right click registered")
-	local rctx = math.floor(RightClickTable["x"])+0.5
-	local rcty = math.floor(RightClickTable["y"])+0.5
-	print("rctx: ", rctx, "rcty: ", rcty)
-	bfsWrapper({ startPos = { x = -60.5, y = -350.5 }, endPos = { x = rctx, y = rcty}, surface =
-	game.get_surface('nauvis'), player = event.player_index })
+	local playerN = game.get_player(event.player_index)
+	local stack = playerN.cursor_stack
+	if stack and stack.valid_for_read then
+		print("player cursor stack: ", stack.name, "and type: ", type(playerN.cursor_stack))
+		local x = event.cursor_position.x
+		local y = event.cursor_position.y
+		RightClickTable = { ["x"] = x, ["y"] = y }
+		print("RightClickTable: ", serpent.block(RightClickTable))
+		print("Right click registered at: ", "x: " .. x, "y: " .. y)
+		game.print("Right click registered")
+		local rctx = math.floor(RightClickTable["x"]) + 0.5
+		local rcty = math.floor(RightClickTable["y"]) + 0.5
+		print("rctx: ", rctx, "rcty: ", rcty)
+		bfsWrapper({
+			startPos = { x = -60.5, y = -350.5 },
+			endPos = { x = rctx, y = rcty },
+			surface = game.get_surface('nauvis'),
+			player = event.player_index
+		})
+	else
+		print("stack empty")
+	end
 end)

@@ -5,7 +5,7 @@ local AutoBuildOutpost = {
 	default_value = false
 }
 
-data:extend({AutoBuildOutpost})
+data:extend({ AutoBuildOutpost })
 
 local bfsMaxDepth = {
 	type = "int-setting",
@@ -15,4 +15,4 @@ local bfsMaxDepth = {
 	default_value = 150000
 }
 
-data:extend({bfsMaxDepth})
+data:extend({ bfsMaxDepth })
