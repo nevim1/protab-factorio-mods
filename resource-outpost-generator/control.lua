@@ -25,92 +25,71 @@ local function bfsWrapper(input)
 	local function bfs(pumpjacks)
 		local occupied = {}
 		for _,pumpjack in ipairs(pumpjacks) do
-			print(pumpjack)
 			for _, pos in ipairs({{x=0,y=0},{x=1,y=0},{x=1,y=1},{x=0,y=1},{x=-1,y=1},{x=-1,y=0},{x=-1,y=-1},{x=0,y=-1},{x=1,y=-1}}) do
 				local newPos = {x = pumpjack.position.x + pos.x, y = pumpjack.position.y + pos.y}
 				occupied[MPtoStr(newPos)] = true
-				surface.create_entity({name='entity-ghost', position = {x = pumpjack.position.x + pos.x, y = pumpjack.position.y + pos.y}, inner_name='transport-belt', force='player'})
 			end
 		end
 
-		print('occupied: ' , serpent.block(occupied))
-		print('goals: ', serpent.block(goals))
 		local directions = {{ x = 0, y = -1 }, { x = 0, y = 1 }, { x = -1, y = 0 }, { x = 1, y = 0 }}
 		for _,pumpjack in ipairs(pumpjacks) do
+			local prevTile = {}
 			local queue = {}
 			for dir,offset in pairs({east = {x=2,y=-1}, north = {x=1,y=-2}, west = {x=-2,y=1}, south = {x=-1,y=2}}) do
 				--surface.create_entity({name='entity-ghost', position = {x = pumpjack.position.x + offset.x, y = pumpjack.position.y + offset.y}, inner_name='transport-belt', force='player'})
-				table.insert(queue, { position = {x = pumpjack.position.x + offset.x, y = pumpjack.position.y + offset.y}, path = {}, visited = {}, pumpjackDirection = dir })
+				local pos = {x = pumpjack.position.x + offset.x, y = pumpjack.position.y + offset.y}
+				table.insert(queue, { position = pos, path = {}, visited = {}, pumpjackDirection = dir })
 			end
-			print('queue: ', serpent.block(queue))
 			local currentPath = {}
-			local currentVisited = {}
+			local visited = {}
 			local currentPDir = ''
 			local found = false
 			local index = 1
-			local prevTile = {}
 
+			local setting = settings.get_player_settings(player)["bfsMaxDepth"].value 
 
 			while #queue ~= index do
-				print('index: ', index)
-				print('queue length: ', #queue)
-				--print('queue: ', serpent.block(queue))
-				game.print('new iteration of main while loop')
-				if index == settings.get_player_settings(player)["bfsMaxDepth"].value then
+				if index == setting then
 					game.print("Exceeded bfsMaxDepth, skipping pumpjack")
 					break
 				end
 				local currentPosition = queue[index].position
-				currentVisited = queue[index].visited
-				currentPDir = queue[index].pumpjackDirection
-				currentPath = queue[index].path
+				local currentPDir = queue[index].pumpjackDirection
 				index = index + 1
-
-				table.insert(currentPath, currentPosition)
 
 				if surface.can_place_entity({ name = 'pipe', position = currentPosition }) then
 					local StrPos = MPtoStr(currentPosition)
 					if not occupied[StrPos] then
-						game.print(StrPos)
-						if currentVisited[StrPos] ~= true then
-							currentVisited[StrPos] = true
+							visited[StrPos] = true
 							if goals[StrPos] then
 								found = currentPosition
 								break
 							end
 							for _, vec in ipairs(directions) do
-								print('for ran at least once')
-								print('currentVisited: ', serpent.block(currentVisited))
 								local newPos = { x = currentPosition.x + vec.x, y = currentPosition.y + vec.y }
-								if not currentVisited[MPtoStr(newPos)] then
-									print('check passed')
+								if not visited[MPtoStr(newPos)] then
 									table.insert(queue, {
 										position = newPos,
 										path = currentPath,
-										visited = currentVisited,
+										visited = visited,
 										pumpjackDirection = currentPDir
 									})
 									prevTile[MPtoStr(newPos)] = currentPosition
 								end
-							end
 						end
 					end
 				end
 			end
 			if found then
-				game.print('path found')
 				print(currentPDir)
 				--return currentPath
 				local pipes = {}
 				local tile = found
 				local i = 0
-				while tile ~= nil do
-					i = i + 1
-					if i == 500 then
-						break
-					end
-					print(tile)
+				while tile do
+					--print(tile)
 					table.insert(pipes, tile)
+					table.insert(goals, tile)
 					tile = prevTile[MPtoStr(tile)]
 				end
 				return pipes
@@ -216,9 +195,11 @@ script.on_event("CustomRightClick", function(event)
 		inner_name = 'pipe',
 		force = 'player'
 	}
-	print('output from bfs: ', serpent.block(pipeLocations))
-	for _,pos in ipairs(pipeLocations) do
-		pipe.position = pos
-		game.get_surface('nauvis').create_entity(pipe)
+	--print('output from bfs: ', serpent.block(pipeLocations))
+	if pipeLocations then
+		for _,pos in ipairs(pipeLocations) do
+			pipe.position = pos
+			game.get_surface('nauvis').create_entity(pipe)
+		end
 	end
 end)
